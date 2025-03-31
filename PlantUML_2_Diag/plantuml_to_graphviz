@@ -1,0 +1,60 @@
+digraph {
+	rankdir=LR size="12,6"
+	n0 [label="User enters registration details"]
+	n1 [label="Submit to Appwrite Client"]
+	n2 [label="Appwrite Client creates account"]
+	n3 [label="Create user session"]
+	n4 [label="Create user profile in database"]
+	n5 [label="Navigate to home screen"]
+	n6 [label="User enters login credentials"]
+	n7 [label="Submit to Appwrite Client"]
+	n8 [label="Create email session"]
+	n9 [label="Verify authentication token"]
+	n10 [label="Navigate to authenticated area"]
+	n11 [label="Check active session"]
+	n12 [label="Get session from Appwrite"]
+	n13 [label="Validate session token"]
+	n14 [label="Get user account details"]
+	n15 [label="User uploads content"]
+	n16 [label="Send file to Appwrite Storage"]
+	n17 [label="Get file URL"]
+	n18 [label="Save reference in database"]
+	n19 [label="Display success message"]
+	n20 [label="User requests data"]
+	n21 [label="Query Appwrite Database"]
+	n22 [label="Process returned documents"]
+	n23 [label="Update UI with data"]
+	n24 [label="User triggers function execution"]
+	n25 [label="Send parameters to function"]
+	n26 [label="Function processes request"]
+	n27 [label="Return results to client"]
+	n28 [label="Update UI with results"]
+	n0 -> n1
+	n1 -> n2
+	n2 -> n3
+	n3 -> n4
+	n4 -> n5
+	n5 -> n6
+	n6 -> n7
+	n7 -> n8
+	n8 -> n9
+	n9 -> n10
+	n10 -> n11
+	n11 -> n12
+	n12 -> n13
+	n13 -> n14
+	n14 -> n15
+	n15 -> n16
+	n16 -> n17
+	n17 -> n18
+	n18 -> n19
+	n19 -> n20
+	n20 -> n21
+	n21 -> n22
+	n22 -> n23
+	n23 -> n24
+	n24 -> n25
+	n25 -> n26
+	n26 -> n27
+	n27 -> n28
+}

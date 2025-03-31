@@ -1,0 +1,1 @@
+This tool is to help creators to track their finances across various services. so if you have 3 different storefronts, all data and ways to manage them is accessible

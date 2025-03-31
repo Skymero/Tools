@@ -1,0 +1,41 @@
+@startuml Website Analysis Process
+
+title Website Analysis Flow
+
+skinparam activityBackgroundColor LightBlue
+skinparam activityBorderColor Blue
+skinparam arrowColor DarkBlue
+
+:Input website files are identified;
+:Analyze website structure;
+:Identify framework in use;
+:Detect UI components/libraries;
+
+:Generate Design.md in specified location;
+
+fork
+  :Document Project Overview;
+  :Name of website;
+  :Framework identification;
+  :UI libraries used;
+fork again
+  :Create Description;
+  :Document layout and design;
+fork again
+  :Document Design Specifics;
+  :List features;
+  :Analyze design for each feature;
+  :Document JavaScript functions;
+end fork
+
+:Document General Design Notes;
+:Layout description;
+:Typography analysis;
+:Interactivity elements;
+:Color scheme documentation;
+:Error handling approach;
+:Data fetching methods;
+
+:Final Design.md document complete;
+
+@enduml

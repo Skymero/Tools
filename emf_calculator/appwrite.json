@@ -1,0 +1,477 @@
+{
+    "projectId": "670820a600112ca60a46",
+    "projectName": "jsm_react_native_crash_course",
+    "settings": {
+        "services": {
+            "account": true,
+            "avatars": true,
+            "databases": true,
+            "locale": true,
+            "health": true,
+            "storage": true,
+            "teams": true,
+            "users": true,
+            "functions": true,
+            "graphql": true,
+            "messaging": true
+        },
+        "auth": {
+            "methods": {
+                "jwt": true,
+                "phone": true,
+                "invites": true,
+                "anonymous": true,
+                "email-otp": true,
+                "magic-url": true,
+                "email-password": true
+            },
+            "security": {
+                "duration": 31536000,
+                "limit": 0,
+                "sessionsLimit": 10,
+                "passwordHistory": 0,
+                "passwordDictionary": false,
+                "personalDataCheck": false,
+                "sessionAlerts": false,
+                "mockNumbers": []
+            }
+        }
+    },
+    "functions": [
+        {
+            "$id": "67127dc700224b104744",
+            "execute": [
+                "any"
+            ],
+            "name": "Starter function",
+            "enabled": true,
+            "logging": true,
+            "runtime": "python-3.9",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.py",
+            "commands": "pip install -r requirements.txt",
+            "specification": "s-0.5vcpu-512mb",
+            "path": "functions/Starter function"
+        },
+        {
+            "$id": "67d9a448002dced9e2e0",
+            "execute": [
+                "any"
+            ],
+            "name": "emf_calculator",
+            "enabled": true,
+            "logging": true,
+            "runtime": "python-3.12",
+            "scopes": [
+                "users.read"
+            ],
+            "events": [],
+            "schedule": "",
+            "timeout": 15,
+            "entrypoint": "src/main.py",
+            "commands": "pip install -r requirements.txt",
+            "specification": "s-0.5vcpu-512mb",
+            "path": "functions/emf_calculator"
+        }
+    ],
+    "databases": [
+        {
+            "$id": "6708242f0008dfa2e3bf",
+            "name": "rma_myapp",
+            "enabled": true
+        }
+    ],
+    "collections": [
+        {
+            "$id": "67082458002f7c9ef5c8",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6708242f0008dfa2e3bf",
+            "name": "users",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "username",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2200,
+                    "default": null
+                },
+                {
+                    "key": "email",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "email",
+                    "default": null
+                },
+                {
+                    "key": "avatar",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "accountId",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2200,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "6708246f000723b8d913",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6708242f0008dfa2e3bf",
+            "name": "videos",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2200,
+                    "default": null
+                },
+                {
+                    "key": "thumbnail",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "prompt",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 5000,
+                    "default": null
+                },
+                {
+                    "key": "video",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "creator",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "67082458002f7c9ef5c8",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "67082551000b1f2dc27a",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                }
+            ],
+            "indexes": [
+                {
+                    "key": "search_by_title",
+                    "type": "fulltext",
+                    "status": "available",
+                    "attributes": [
+                        "title"
+                    ],
+                    "orders": [
+                        "ASC"
+                    ]
+                }
+            ]
+        },
+        {
+            "$id": "670eeeb200205615ca93",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6708242f0008dfa2e3bf",
+            "name": "images",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "creator",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "67082458002f7c9ef5c8",
+                    "relationType": "oneToMany",
+                    "twoWay": false,
+                    "twoWayKey": "670eeefb000aa51d35ce",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "image",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "date",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "6787142500223c7309d0",
+            "$permissions": [
+                "create(\"any\")",
+                "read(\"any\")",
+                "update(\"any\")",
+                "delete(\"any\")"
+            ],
+            "databaseId": "6708242f0008dfa2e3bf",
+            "name": "sessions",
+            "enabled": true,
+            "documentSecurity": true,
+            "attributes": [
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2200,
+                    "default": null
+                },
+                {
+                    "key": "thumbnail",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "users",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "67082458002f7c9ef5c8",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "678714b5001273f57abc",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                },
+                {
+                    "key": "date_time",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "location",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 2200,
+                    "default": null
+                },
+                {
+                    "key": "Coed",
+                    "type": "boolean",
+                    "required": false,
+                    "array": false,
+                    "default": false
+                },
+                {
+                    "key": "maxParticipants",
+                    "type": "integer",
+                    "required": true,
+                    "array": false,
+                    "min": 1,
+                    "max": 10,
+                    "default": null
+                },
+                {
+                    "key": "category",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 3000,
+                    "default": null
+                },
+                {
+                    "key": "creator",
+                    "type": "relationship",
+                    "required": false,
+                    "array": false,
+                    "relatedCollection": "67082458002f7c9ef5c8",
+                    "relationType": "manyToOne",
+                    "twoWay": false,
+                    "twoWayKey": "67ba44590022ae2f6be9",
+                    "onDelete": "setNull",
+                    "side": "parent"
+                }
+            ],
+            "indexes": []
+        },
+        {
+            "$id": "67b90e22003daca6ffb4",
+            "$permissions": [],
+            "databaseId": "6708242f0008dfa2e3bf",
+            "name": "events",
+            "enabled": true,
+            "documentSecurity": false,
+            "attributes": [
+                {
+                    "key": "thumbnail",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "format": "url",
+                    "default": null
+                },
+                {
+                    "key": "title",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 100,
+                    "default": null
+                },
+                {
+                    "key": "date",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "time",
+                    "type": "datetime",
+                    "required": true,
+                    "array": false,
+                    "format": "",
+                    "default": null
+                },
+                {
+                    "key": "category",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "tags",
+                    "type": "string",
+                    "required": false,
+                    "array": true,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "description",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "location",
+                    "type": "string",
+                    "required": true,
+                    "array": false,
+                    "size": 1000,
+                    "default": null
+                },
+                {
+                    "key": "coverCharge",
+                    "type": "double",
+                    "required": true,
+                    "array": false,
+                    "min": 0,
+                    "max": 1000,
+                    "default": null
+                }
+            ],
+            "indexes": []
+        }
+    ],
+    "buckets": [
+        {
+            "$id": "670825a2000361d39c6e",
+            "$permissions": [
+                "create(\"users\")",
+                "read(\"users\")",
+                "update(\"users\")",
+                "delete(\"users\")",
+                "read(\"guests\")"
+            ],
+            "fileSecurity": false,
+            "name": "files",
+            "enabled": true,
+            "maximumFileSize": 50000000,
+            "allowedFileExtensions": [
+                "jpg",
+                "png",
+                "gif",
+                "pdf",
+                "mp4"
+            ],
+            "compression": "none",
+            "encryption": true,
+            "antivirus": true
+        }
+    ]
+}

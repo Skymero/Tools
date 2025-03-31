@@ -1,0 +1,48 @@
+digraph {
+	rankdir=LR size="12,6"
+	n0 [label="Input website files are identified"]
+	n1 [label="Analyze website structure"]
+	n2 [label="Identify framework in use"]
+	n3 [label="Detect UI components/libraries"]
+	n4 [label="Generate Design.md in specified location"]
+	n5 [label="Document Project Overview"]
+	n6 [label="Name of website"]
+	n7 [label="Framework identification"]
+	n8 [label="UI libraries used"]
+	n9 [label="Create Description"]
+	n10 [label="Document layout and design"]
+	n11 [label="Document Design Specifics"]
+	n12 [label="List features"]
+	n13 [label="Analyze design for each feature"]
+	n14 [label="Document JavaScript functions"]
+	n15 [label="Document General Design Notes"]
+	n16 [label="Layout description"]
+	n17 [label="Typography analysis"]
+	n18 [label="Interactivity elements"]
+	n19 [label="Color scheme documentation"]
+	n20 [label="Error handling approach"]
+	n21 [label="Data fetching methods"]
+	n22 [label="Final Design.md document complete"]
+	n0 -> n1
+	n1 -> n2
+	n2 -> n3
+	n3 -> n4
+	n4 -> n5
+	n5 -> n6
+	n6 -> n7
+	n7 -> n8
+	n8 -> n9
+	n9 -> n10
+	n10 -> n11
+	n11 -> n12
+	n12 -> n13
+	n13 -> n14
+	n14 -> n15
+	n15 -> n16
+	n16 -> n17
+	n17 -> n18
+	n18 -> n19
+	n19 -> n20
+	n20 -> n21
+	n21 -> n22
+}
