@@ -1,0 +1,47 @@
+2025-03-31 16:05:15,078 - tapa_tool - INFO - Extracted 5 requirements from sample_requirements.txt
+2025-03-31 16:05:15,079 - tapa_tool - INFO - Built search query: 
+2025-03-31 16:05:15,080 - tapa_tool - ERROR - Could not build a search query from requirements
+2025-03-31 16:05:15,080 - tapa_tool - INFO - Built search query: 
+2025-03-31 16:05:15,080 - tapa_tool - ERROR - Could not build a search query from requirements
+2025-03-31 16:05:15,080 - tapa_tool - INFO - Built search query: 
+2025-03-31 16:05:15,080 - tapa_tool - ERROR - Could not build a search query from requirements
+2025-03-31 16:05:15,080 - tapa_tool - INFO - Built search query: 
+2025-03-31 16:05:15,082 - tapa_tool - ERROR - Could not build a search query from requirements
+2025-03-31 16:05:15,082 - tapa_tool - INFO - Built search query: 
+2025-03-31 16:05:15,082 - tapa_tool - ERROR - Could not build a search query from requirements
+2025-03-31 16:06:30,053 - tapa_tool - INFO - Extracted 5 requirements from sample_requirements.txt
+2025-03-31 16:06:30,055 - tapa_tool - INFO - Built search query: Resistor, 10k ohm, 1/4W, 5% tolerance
+2025-03-31 16:06:30,055 - tapa_tool - INFO - Searching Mouser with query: Resistor, 10k ohm, 1/4W, 5% tolerance
+2025-03-31 16:06:30,890 - tapa_tool - ERROR - Failed to search Mouser. Status code: 404
+2025-03-31 16:06:30,892 - tapa_tool - INFO - Built search query: Capacitor, 10uF, 25V, electrolytic
+2025-03-31 16:06:30,892 - tapa_tool - INFO - Searching Mouser with query: Capacitor, 10uF, 25V, electrolytic
+2025-03-31 16:06:31,350 - tapa_tool - ERROR - Failed to search Mouser. Status code: 404
+2025-03-31 16:06:31,351 - tapa_tool - INFO - Built search query: LED, red, 5mm, 20mA
+2025-03-31 16:06:31,351 - tapa_tool - INFO - Searching Mouser with query: LED, red, 5mm, 20mA
+2025-03-31 16:06:31,877 - tapa_tool - ERROR - Failed to search Mouser. Status code: 404
+2025-03-31 16:06:31,878 - tapa_tool - INFO - Built search query: Transistor, 2N2222, NPN, TO-92 package
+2025-03-31 16:06:31,878 - tapa_tool - INFO - Searching Mouser with query: Transistor, 2N2222, NPN, TO-92 package
+2025-03-31 16:06:32,503 - tapa_tool - ERROR - Failed to search Mouser. Status code: 404
+2025-03-31 16:06:32,503 - tapa_tool - INFO - Built search query: Microcontroller, ATmega328P, PDIP-28 package
+2025-03-31 16:06:32,503 - tapa_tool - INFO - Searching Mouser with query: Microcontroller, ATmega328P, PDIP-28 package
+2025-03-31 16:06:32,932 - tapa_tool - ERROR - Failed to search Mouser. Status code: 404
+2025-03-31 16:12:38,258 - tapa_tool - INFO - Extracted 5 requirements from taa_compliant_parts.json
+2025-03-31 16:12:38,258 - tapa_tool - INFO - Built search query: Intel Core i7-10700K Processor
+2025-03-31 16:12:38,258 - tapa_tool - INFO - Searching Mouser with query: Intel Core i7-10700K Processor
+2025-03-31 16:12:38,394 - tapa_tool - ERROR - Failed to search Mouser. Status code: 403
+2025-03-31 16:12:38,396 - tapa_tool - INFO - Built search query: Texas Instruments SN74HC04N Hex Inverter
+2025-03-31 16:12:38,396 - tapa_tool - INFO - Searching Mouser with query: Texas Instruments SN74HC04N Hex Inverter
+2025-03-31 16:12:38,477 - tapa_tool - ERROR - Failed to search Mouser. Status code: 403
+2025-03-31 16:12:38,477 - tapa_tool - INFO - Built search query: Microchip PIC16F877A-I/P Microcontroller
+2025-03-31 16:12:38,477 - tapa_tool - INFO - Searching Mouser with query: Microchip PIC16F877A-I/P Microcontroller
+2025-03-31 16:12:38,557 - tapa_tool - ERROR - Failed to search Mouser. Status code: 403
+2025-03-31 16:12:38,558 - tapa_tool - INFO - Built search query: Analog Devices ADC0804LCN Analog to Digital Converter
+2025-03-31 16:12:38,558 - tapa_tool - INFO - Searching Mouser with query: Analog Devices ADC0804LCN Analog to Digital Converter
+2025-03-31 16:12:38,687 - tapa_tool - ERROR - Failed to search Mouser. Status code: 403
+2025-03-31 16:12:38,688 - tapa_tool - INFO - Built search query: TE Connectivity 1825232-1 Connector
+2025-03-31 16:12:38,688 - tapa_tool - INFO - Searching Mouser with query: TE Connectivity 1825232-1 Connector
+2025-03-31 16:12:38,882 - tapa_tool - ERROR - Failed to search Mouser. Status code: 403
+2025-03-31 16:15:18,740 - tapa_tool - INFO - Extracted 5 requirements from taa_compliant_parts.json
+2025-03-31 16:15:18,744 - tapa_tool - INFO - Saved 5 parts to C:\Users\ricky\Tools\Tapa_tool\OUTPUT_FILES\all_parts.csv
+2025-03-31 16:15:18,745 - tapa_tool - INFO - Saved 5 parts to C:\Users\ricky\Tools\Tapa_tool\OUTPUT_FILES\parts_with_compliance.csv
+2025-03-31 16:15:18,748 - tapa_tool - INFO - Saved 5 parts to C:\Users\ricky\Tools\Tapa_tool\OUTPUT_FILES\taa_compliant_parts.csv

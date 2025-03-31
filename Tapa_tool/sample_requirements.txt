@@ -1,0 +1,5 @@
+REQ-001: Resistor, 10k ohm, 1/4W, 5% tolerance
+REQ-002: Capacitor, 10uF, 25V, electrolytic
+REQ-003: LED, red, 5mm, 20mA
+REQ-004: Transistor, 2N2222, NPN, TO-92 package
+REQ-005: Microcontroller, ATmega328P, PDIP-28 package

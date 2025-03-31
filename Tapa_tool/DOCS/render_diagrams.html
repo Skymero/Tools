@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tapa Tool Diagrams</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .diagram {
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .diagram h2 {
+            margin-top: 0;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .diagram-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .diagram-image img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #eee;
+        }
+        .code {
+            background-color: #f8f8f8;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 20px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .instructions {
+            background-color: #fffde7;
+            padding: 15px;
+            border-left: 4px solid #ffeb3b;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Tapa Tool Architecture Diagrams</h1>
+        
+        <div class="instructions">
+            <h3>How to View the Diagrams</h3>
+            <p>Each diagram below has a button that will open the PlantUML web editor with the code pre-loaded. Click the button and you'll be taken to the PlantUML server where you can view the rendered diagram.</p>
+        </div>
+        
+        <div class="diagram">
+            <h2>Class Structure Diagram</h2>
+            <div class="code">@startuml
+
+' Class definitions
+class RequirementsExtractor {
+  -file_path: str
+  +__init__(file_path: str)
+  +extract(): Dict[str, Dict[str, Any]]
+  -_extract_from_text(): Dict[str, Dict[str, Any]]
+  -_extract_from_csv(): Dict[str, Dict[str, Any]]
+  -_extract_from_json(): Dict[str, Dict[str, Any]]
+}
+
+class MouserScraper {
+  -requirements: Dict[str, Any]
+  -headers: Dict[str, str]
+  -session: requests.Session
+  +__init__(requirements: Dict[str, Any])
+  +build_search_query(): str
+  +search(): List[Dict[str, str]]
+}
+
+class TAAComplianceChecker {
+  -headers: Dict[str, str]
+  -session: requests.Session
+  +__init__()
+  +check_compliance(part_url: str): Tuple[bool, str]
+}
+
+' Helper functions
+class "Functions" as Functions << (F,#FFCC00) >> {
+  +print_parts_table(parts, title, include_compliance=False)
+  +save_parts_to_csv(parts, filename)
+  +main()
+}
+
+' Relationships
+Functions --> RequirementsExtractor: creates
+Functions --> MouserScraper: creates for each requirement
+Functions --> TAAComplianceChecker: creates if --check-taa
+RequirementsExtractor ..> "returns" Dictionary
+MouserScraper ..> "returns" List
+TAAComplianceChecker ..> "returns" Tuple
+
+@enduml</div>
+            <button onclick="window.open('https://www.plantuml.com/plantuml/uml/VP9DJiCm48JtFiKihC5-0Ke4bJGGIbLsW6KF2e5JaEqxfsKBKRjtPCY5Mx59sOsVlk-qYfROVYNOoVe38rOD0sWv5F9w6YZ-KKbcSXf9r-rZofn3Py9FsF3UMzlCm9FUEZPWEa_nLdqTLg7Y3T0Gu3-0Xd9JQjZP3M2Tl9hcMbHUjmB2-uZCaXlxnqJFQ3Mwxa1mVBuLkW4-Ct0A7Ll7x-gPqZKj9STk9qpXI0wksPIcBQP_GH_l7qM5-IcbMUZSrUqzp5qMRs7dq9n5JMHdFrPLO__vb--CnVcCq7nZD1Lf_0S0')">View Rendered Class Structure Diagram</button>
+        </div>
+        
+        <div class="diagram">
+            <h2>Sequence Diagram</h2>
+            <div class="code">@startuml
+
+actor User
+participant "main()" as Main
+participant "RequirementsExtractor" as Extractor
+participant "MouserScraper" as Scraper
+participant "TAAComplianceChecker" as Checker
+database "Mouser.com" as Mouser
+database "Output Files" as Files
+
+User -> Main: Run with arguments
+activate Main
+
+' Parse arguments
+Main -> Main: Parse command-line arguments
+Main -> Main: Configure logging
+Main -> Main: Create output directory
+
+' Extract requirements
+Main -> Extractor: create(file_path)
+activate Extractor
+Main -> Extractor: extract()
+Extractor -> Extractor: Determine file type
+alt .txt or .md file
+    Extractor -> Extractor: _extract_from_text()
+else .csv file
+    Extractor -> Extractor: _extract_from_csv()
+else .json file
+    Extractor -> Extractor: _extract_from_json()
+end
+Extractor --> Main: return requirements dict
+deactivate Extractor
+
+' Save requirements to JSON
+Main -> Files: Save requirements to JSON
+activate Files
+Files --> Main: JSON file saved
+deactivate Files
+
+' Search for parts for each requirement
+loop for each requirement
+    Main -> Scraper: create(requirement)
+    activate Scraper
+    Main -> Scraper: search()
+    
+    ' Build search query
+    Scraper -> Scraper: build_search_query()
+    
+    ' Search Mouser
+    Scraper -> Mouser: GET search request
+    activate Mouser
+    Mouser --> Scraper: HTML response
+    deactivate Mouser
+    
+    ' Parse results
+    Scraper -> Scraper: Parse with BeautifulSoup
+    Scraper -> Scraper: Extract part information
+    
+    Scraper --> Main: return parts list
+    deactivate Scraper
+    
+    ' Add requirement ID to parts
+    Main -> Main: Add requirement ID to parts
+    Main -> Main: Add parts to all_parts list
+end
+
+' Print and save all parts
+Main -> Main: print_parts_table(all_parts)
+Main -> Files: save_parts_to_csv(all_parts)
+activate Files
+Files --> Main: CSV file saved
+deactivate Files
+
+' Check TAA compliance if requested
+opt --check-taa argument provided
+    Main -> Checker: create()
+    activate Checker
+
+    loop for each part in all_parts
+        Main -> Checker: check_compliance(part['link'])
+        
+        ' Check compliance
+        Checker -> Mouser: GET part details
+        activate Mouser
+        Mouser --> Checker: HTML response
+        deactivate Mouser
+        
+        ' Parse for compliance
+        Checker -> Checker: Parse with BeautifulSoup
+        Checker -> Checker: Check for compliance indicators
+        
+        Checker --> Main: return is_compliant, evidence
+        
+        ' Update part info
+        Main -> Main: Add compliance info to part
+        Main -> Main: Add to compliant_parts if compliant
+    end
+    
+    deactivate Checker
+    
+    ' Save parts with compliance info
+    Main -> Files: save_parts_to_csv(all_parts with compliance)
+    activate Files
+    Files --> Main: CSV file saved
+    deactivate Files
+    
+    ' Print and save compliant parts
+    alt compliant_parts not empty
+        Main -> Main: print_parts_table(compliant_parts)
+        Main -> Files: save_parts_to_csv(compliant_parts)
+        activate Files
+        Files --> Main: CSV file saved
+        deactivate Files
+    else
+        Main -> Main: Print "No TAA compliant parts found"
+    end
+end
+
+Main --> User: Exit code (0 for success, 1 for failure)
+deactivate Main
+
+@enduml</div>
+            <button onclick="window.open('https://www.plantuml.com/plantuml/uml/TP71JiCm44Jl-nLXz2AqBK0Y0AY8iLGsDYJL2mJ9WxPjDX6s_tpqnk6OwZ5LpNsFClr_l7_UX-pPJEfIQJgWfXQ6GZwSsgGCCUlW4FkALQ4Xf4CZ5qN4Iyn9Lm7cQqaVbGAwvnYeUfPNpQZGcfxDnGbsY2l0gNGiC2cCvjDGWMXI_E3ybRdkBaYxsm7gqBPuXVj5CjEPYMMzABafdvnlh0zOCqbJeFJ_oiEX-GYtzvuWh5oUBh7ZDmWHKqRJt9ZQWAm8GI7rGKiGJ9xvunH-Bh7wEPcCi8_RBb0FV3f_Ygb55EKxkjUcYvMbsEOFvnr3wPgm23gUvAkQrKH6dPHjFi_lqcjmw9RvBFSfcnT_fj_plvlpkwuiJjyZL7K7A1QDG0OVQZCgePUJXuRHgFdJvCwZ5xC7fF2s4QsYwl7lHXgIeWBN2mT6ZRFrT7CYM3zSUzw3kjjYQDnO8bCzzYfptXVBIVCHAcDU-xMx0eKnHSiC4UaKbsv9aDh6tCeK6BjnEOSbJ7hYIk8F-BPe_4G4r3ub6mI_cM_4fQrHCbG1rZ8jHCl5DJkZ9zYB2IqQT4FVgTK1GJrSEw_hBrDLQUV3X1-A_0000F__')">View Rendered Sequence Diagram</button>
+        </div>
+        
+        <div class="diagram">
+            <h2>Flowchart</h2>
+            <div class="code">@startuml
+
+!define RECTANGLE class
+!define CIRCLE interface
+
+start
+
+:Parse command-line arguments;
+:Configure logging;
+:Create output directory;
+
+:Extract requirements from input file;
+
+:Determine file type (.txt, .csv, .json);
+
+if (File exists?) then (yes)
+  if (File type) then (text)
+    :Extract from text file;
+  else if (File type) then (csv)
+    :Extract from CSV file;
+  else if (File type) then (json)
+    :Extract from JSON file;
+  endif
+else (no)
+  :Log error;
+  stop
+endif
+
+:Save requirements to JSON;
+
+if (Requirements found?) then (yes)
+  :Initialize empty all_parts list;
+  
+  while (More requirements?) is (yes)
+    :Get next requirement;
+    :Create MouserScraper;
+    :Build search query;
+    
+    if (Query created?) then (yes)
+      :Search Mouser.com;
+      :Parse search results;
+      
+      if (Parts found?) then (yes)
+        :Add requirement ID to parts;
+        :Add parts to all_parts list;
+      else (no)
+        :Log "No parts found for requirement";
+      endif
+    else (no)
+      :Log error;
+    endif
+  endwhile (no)
+  
+  if (all_parts not empty?) then (yes)
+    :Print parts table;
+    :Save all parts to CSV;
+    
+    if (Check TAA compliance?) then (yes)
+      :Create TAAComplianceChecker;
+      :Initialize empty compliant_parts list;
+      
+      while (More parts?) is (yes)
+        :Get next part;
+        :Check TAA compliance;
+        :Add compliance info to part;
+        
+        if (Is compliant?) then (yes)
+          :Add to compliant_parts list;
+        endif
+      endwhile (no)
+      
+      :Save all parts with compliance info;
+      
+      if (compliant_parts not empty?) then (yes)
+        :Print compliant parts table;
+        :Save compliant parts to CSV;
+      else (no)
+        :Print "No TAA compliant parts found";
+      endif
+    endif
+    
+    :Print results summary;
+    :Return success (0);
+  else (no)
+    :Print "No parts found for any requirements";
+    :Return failure (1);
+  endif
+else (no)
+  :Print "No requirements found";
+  :Return failure (1);
+endif
+
+stop
+
+@enduml</div>
+            <button onclick="window.open('https://www.plantuml.com/plantuml/uml/TP7DJiCm48JlVegUTvtPa27G8BG6Df9G0e9pWIxNGWnwfRyLzNvt1_q2eEZg0-w-_iLnBEQPNzrFMYTAEbP-jJMEb2G-IeG6dxhkMwCIECXKdG7zXuCMt5PU64yI4Nx2IJXN40bh2xw83mCTmfm4v4-nKCdLa5Fk9Xn9j4oJmEcg3Cfd2--g3k2fEHZjzbKhP4LRVbIhsxaLMNXrU63TQKSu7CZv9BMTKo4LCkUOxrSFkkKwu55UhOz11hm66dG5bTL7oGdwHsxqVw7wdLv6jHC0uGaZIhyJeBpFTJnFyqGvwTaKY-cXRzCnv4UFwSKaxo_9rqhWM7cENh8k1gHnMUj4vEP0qDJUxb_4vM3ffA_D6sZXq3Z3K3nDg4U3KnbKHb_yTSrZV0TH-GmqSGYOGnmyFszQlP5WO3QSXv5Pj9TYn-v-hYUc9c9rY5dWlCnFPBBYGYsHtqBYP_o3XgHTn-yTETY6-yzqR-CwsqoFYCOlW4p4IqAkL7-sVFSjYPscKs6woxW_eUepnDEeCXY5TrHfIzP4q7NmjXw_mwm9c7z_kh1R8fSWZLdWZ2Qjh-RJUG-HffVgQQp2JxBDdCvdJDGRwJScfRBCJYlQECQBu7iT9yilsR8sVSGV')">View Rendered Flowchart</button>
+        </div>
+        
+        <div class="diagram">
+            <h2>Data Flow</h2>
+            <div class="code">@startuml
+
+!define RECTANGLE class
+!define CIRCLE interface
+
+RECTANGLE "Input Requirement File" as InputFile
+RECTANGLE "RequirementsExtractor" as Extractor
+RECTANGLE "Requirements Dictionary" as ReqDict
+RECTANGLE "MouserScraper" as Scraper
+RECTANGLE "Mouser.com" as Mouser
+RECTANGLE "Parts List" as PartsList
+RECTANGLE "TAAComplianceChecker" as Checker
+RECTANGLE "Compliance Info" as Compliance
+RECTANGLE "Output CSV Files" as OutputCSV
+RECTANGLE "Console Output" as Console
+
+InputFile --> Extractor : Input
+Extractor --> ReqDict : Extract
+ReqDict --> Scraper : For each requirement
+Scraper --> Mouser : Search query
+Mouser --> Scraper : Search results
+Scraper --> PartsList : Parts data
+PartsList --> Checker : Part URLs
+Checker --> Mouser : Request part details
+Mouser --> Checker : Part details page
+Checker --> Compliance : Analyze
+Compliance --> PartsList : Add compliance info
+PartsList --> OutputCSV : Save to file
+PartsList --> Console : Display
+
+@enduml</div>
+            <button onclick="window.open('https://www.plantuml.com/plantuml/uml/RP11JiCm38RlVWeVTz-WGQ9K5KGYe4YM9iijhXTPR4QxxueLm7ULbVt-q7VCwrUVDlkRVRg_w6YbCW_CGl6pUYxYH0c14IfMGJnwJqOviqDSYSUPjIB0ZUHZIhC7-u39L_7DaUYu1-sMUn1rUKFLZG4bKEYzR2Vk9NF6peBWHOSjMCvLiuY-NWJM5L7sPlYCPnQMt-OiD3JVGpzrj65xRLqTQgF1JeK_aVb-K3TGzd8G67jXJK1nw0JIEkD1yrqLNDFJzuunpimQU_dxfuLGVRZBIyObbHPBOeKRuPZPCZ1wBOJpdFmvx2m-k_7r6E7TQFF4EtltlG40')">View Rendered Data Flow Diagram</button>
+        </div>
+    </div>
+</body>
+</html>
