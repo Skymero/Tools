@@ -1,0 +1,11 @@
+yfinance
+pandas
+numpy
+matplotlib
+scipy
+pandas_datareader
+investpy
+alpha_vantage
+selenium
+beautifulsoup4
+webdriver-manager

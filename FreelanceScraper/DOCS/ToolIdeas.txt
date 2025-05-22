@@ -1,0 +1,12 @@
+1. Purpose: to scrape freelance websites for job postings that require my set of skills
+2. get credentials from config.py file
+3. iteratively go through the following websites:
+    - upwork.com
+    - fiverr.com
+    - etc
+4. search for job postings with my set of skills that are extracted from my resume
+
+ 
+2. Check what connections work or have worked in that company
+3. generate an email to that contact to see if they would help you out with a reference
+4. aplication bot? 

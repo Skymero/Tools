@@ -1,0 +1,6 @@
+1. Scrape Companies from your network's connections by going to my network connections, then clicking on their name hyperlink, and looking at the experience section in their profile. Then in the CSV it is two columns. first column has the company name, the other has the names of my connections that work or have worked there 
+
+ 
+2. Check what connections work or have worked in that company
+3. generate an email to that contact to see if they would help you out with a reference
+4. aplication bot? 
