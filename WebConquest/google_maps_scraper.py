@@ -1,18 +1,25 @@
 import csv
 import time
+import re
+import os
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
-from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import NoSuchElementException, StaleElementReferenceException, TimeoutException
 
 # --- CONFIG ---
-SEARCH_QUERY = "small businesses in tempe, az"
+# SEARCH_QUERY = "private practice doctors glendale arizona"
+SEARCH_QUERIES = ["HIGH END CONSULTANTS in tucson arizona", "welders in tucson arizona", "woodworkers in tucson arizona", "real estate agents in tucson arizona", "counselors in tucson arizona", "landscapers in tucson arizona", "car detailers in tucson arizona", "accountants in tucson arizona", "attorneys in tucson arizona", "plumbers in tucson arizona", "visual artists in tucson arizona", "dry cleaners in tucson arizona", "3D printer businesses in tucson arizona", "yoga studios in tucson arizona", "massage therapists in tucson arizona", "auto repair shops in tucson arizona", "donut shops in tucson arizona", "esthetician in tucson arizona", "pool maintanence in tucson arizona", "Deli stores in tucson arizona", "doggy day care centers in tucson arizona", "chiropractitioners in tucson arizona", "pawn shops in tucson arizona"  ]
 DELAY_BETWEEN_ACTIONS = 5  # seconds (increased for better loading)
-MAX_RESULTS = 500  # Maximum number of results to process
+MAX_RESULTS = 3000  # Maximum number of results to process
 MAX_SCROLL_ATTEMPTS = 20  # Increased scrolling to find more results
-MAX_PAGINATION_PAGES = 3  # Number of pagination pages to navigate
+MAX_PAGINATION_PAGES = 60  # Number of pagination pages to navigate
+CLICK_RETRY_ATTEMPTS = 5  # Number of times to retry clicking a stale element
+WAIT_TIMEOUT = 10  # Maximum seconds to wait for an element
 
 
 def setup_headless_browser():
@@ -31,6 +38,15 @@ def setup_headless_browser():
 
 
 def search_google_maps(browser, query):
+    """
+    Search Google Maps for a given query and return a list of up to MAX_RESULTS
+    business listings as Selenium WebDriver elements. The search query is used
+    to navigate to the Google Maps search page and the results are collected
+    while scrolling through the results panel. The function takes a maximum
+    number of results to process and a maximum number of pagination pages to
+    navigate. The results are returned as a list of Selenium WebDriver elements
+    which can be used to extract further information.
+    """
     browser.get("https://www.google.com/maps")
     time.sleep(DELAY_BETWEEN_ACTIONS)
     print(f"Searching for: {query}")
@@ -206,6 +222,12 @@ def search_google_maps(browser, query):
 
 
 def extract_business_info(result_block):
+    """
+    Extracts business information from a Google Maps result block
+    :param result_block: Selenium WebElement representing the result block
+    :return: dict with extracted information including name, phone, and website
+    :raises: Exception if detail extraction fails
+    """
     info = {"name": "", "phone": "", "website": None}
     
     # First get basic details directly from the listing
@@ -264,27 +286,107 @@ def extract_business_info(result_block):
             print("Clicking on unnamed listing")
             
         # Store the current window handle before clicking
-        main_window = result_block.parent.current_window_handle
+        browser = result_block.parent
+        main_window = browser.current_window_handle
         
-        # Use JavaScript to click instead of regular click to avoid interception
+        # Create a reference to find the element again if it becomes stale
+        element_xpath = None
+        element_reference = None
+        
+        # Try to get a unique identifier for this element to find it again if needed
         try:
-            # First try JavaScript click which bypasses interception
-            result_block.parent.execute_script("arguments[0].click();", result_block)
+            # Get attributes that might help us identify this element later
+            element_text = result_block.text
+            element_class = result_block.get_attribute('class')
+            element_aria_label = result_block.get_attribute('aria-label')
+            
+            # Build potential XPath expressions to find this element again
+            xpath_candidates = []
+            
+            if element_aria_label:
+                xpath_candidates.append(f"//div[@aria-label='{element_aria_label}']")
+                
+            if element_class:
+                xpath_candidates.append(f"//div[@class='{element_class}']")
+            
+            if element_text and len(element_text) > 0:
+                # Use the first line of text which is often the business name
+                first_line = element_text.split('\n')[0].strip()
+                if first_line:
+                    xpath_candidates.append(f"//div[contains(text(), '{first_line}')]")
+                    xpath_candidates.append(f"//div[.//text()[contains(., '{first_line}')]]")
+            
+            # If we have candidates, save the first one for future reference
+            if xpath_candidates:
+                element_xpath = xpath_candidates[0]
+                print(f"Created reference XPath: {element_xpath}")
         except Exception as e:
-            print(f"JavaScript click failed, trying alternative: {e}")
+            print(f"Error creating element reference: {e}")
+        
+        # Function to attempt clicking with retries
+        def click_with_retry(element, max_attempts=CLICK_RETRY_ATTEMPTS):
+            for attempt in range(max_attempts):
+                try:
+                    # First try JavaScript click which bypasses interception
+                    browser.execute_script("arguments[0].click();", element)
+                    return True
+                except StaleElementReferenceException:
+                    print(f"Stale element on attempt {attempt+1}, refreshing reference...")
+                    # If we have an XPath, try to find the element again
+                    if element_xpath:
+                        try:
+                            # Wait for the element to be present again
+                            wait = WebDriverWait(browser, WAIT_TIMEOUT)
+                            refreshed_element = wait.until(EC.presence_of_element_located((By.XPATH, element_xpath)))
+                            element = refreshed_element  # Update the reference
+                            continue  # Try again with the new reference
+                        except (TimeoutException, NoSuchElementException):
+                            print("Could not find element with saved XPath")
+                    return False
+                except Exception as e:
+                    print(f"Click error on attempt {attempt+1}: {e}")
+                    if attempt == max_attempts - 1:
+                        return False
+                    time.sleep(1)  # Brief pause before retrying
+            return False
+        
+        # First attempt: Try direct click with retry logic
+        click_success = click_with_retry(result_block)
+        
+        # Second attempt: If direct click failed, try alternative approaches
+        if not click_success:
+            print("Direct click failed, trying alternatives...")
+            
+            # Try clicking any overlaying elements first
             try:
-                # Try clicking any overlaying elements first
-                overlay_buttons = result_block.parent.find_elements(By.XPATH, '//button[@class="e2moi"]')
+                overlay_buttons = browser.find_elements(By.XPATH, '//button[@class="e2moi"]')
                 if overlay_buttons:
                     print("Clicking overlay button first")
-                    result_block.parent.execute_script("arguments[0].click();", overlay_buttons[0])
+                    click_with_retry(overlay_buttons[0])
                     time.sleep(1)
-                # Then try clicking the listing again
-                result_block.parent.execute_script("arguments[0].click();", result_block)
-            except Exception as e2:
-                print(f"All click attempts failed: {e2}")
-                # Just continue with what data we have
-                return info
+            except Exception:
+                pass
+                
+            # Try to find a clickable element within the result block
+            try:
+                clickable_elements = result_block.find_elements(By.XPATH, './/a | .//button')
+                if clickable_elements:
+                    print(f"Trying to click child element, found {len(clickable_elements)} options")
+                    click_with_retry(clickable_elements[0])
+            except StaleElementReferenceException:
+                print("Result block became stale when finding child elements")
+                # If we have an XPath, try one final approach with the parent
+                if element_xpath:
+                    try:
+                        wait = WebDriverWait(browser, WAIT_TIMEOUT)
+                        parent_element = wait.until(EC.presence_of_element_located((By.XPATH, element_xpath)))
+                        click_with_retry(parent_element)
+                    except Exception as e:
+                        print(f"Final click attempt failed: {e}")
+                        return info  # Continue with what data we have
+            except Exception as e:
+                print(f"Error finding clickable children: {e}")
+                return info  # Continue with what data we have
                 
         time.sleep(DELAY_BETWEEN_ACTIONS)  # Wait for details to load
         
@@ -293,10 +395,17 @@ def extract_business_info(result_block):
         if len(handles) > 1:
             # Switch to the new tab/window
             detail_window = [h for h in handles if h != main_window][0]
-            result_block.parent.switch_to.window(detail_window)
+            browser.switch_to.window(detail_window)
         
         # Now in detail view, try to extract info from the page
-        page_source = result_block.parent.page_source
+        # Wait for the page to load completely
+        try:
+            wait = WebDriverWait(browser, WAIT_TIMEOUT)
+            wait.until(EC.presence_of_element_located((By.TAG_NAME, "body")))
+        except Exception as e:
+            print(f"Error waiting for detail page to load: {e}")
+            
+        page_source = browser.page_source
         
         # Extract phone number from page source
         phone_patterns = [
@@ -324,7 +433,7 @@ def extract_business_info(result_block):
         
         for selector in website_buttons:
             try:
-                elements = result_block.parent.find_elements(By.XPATH, selector)
+                elements = browser.find_elements(By.XPATH, selector)
                 if elements:
                     # Either get href directly or check if it's a button that needs clicking
                     href = elements[0].get_attribute('href')
@@ -356,7 +465,7 @@ def extract_business_info(result_block):
         
         # Return to main window if we switched
         if len(handles) > 1:
-            result_block.parent.switch_to.window(main_window)
+            browser.switch_to.window(main_window)
             
     except Exception as e:
         print(f"Error during detail extraction: {e}")
@@ -364,30 +473,86 @@ def extract_business_info(result_block):
     return info
 
 
-def categorize_and_save_to_csv(businesses):
-    with open("with_website.csv", "w", newline='', encoding='utf-8') as f_with, \
-         open("without_website.csv", "w", newline='', encoding='utf-8') as f_without:
-        writer_with = csv.writer(f_with)
-        writer_without = csv.writer(f_without)
-        writer_with.writerow(["Name", "Phone", "Website"])
-        writer_without.writerow(["Name", "Phone"])
-        for biz in businesses:
-            if biz["website"]:
-                writer_with.writerow([biz["name"], biz["phone"], biz["website"]])
-            else:
-                writer_without.writerow([biz["name"], biz["phone"]])
+def categorize_and_save_to_csv(businesses, search_query=None):
+    # Use the search query to create a filename-friendly string
+    """
+    Categorize the businesses into two CSV files based on whether they have a
+    website or not. The files are saved in the "results" directory with
+    filenames based on the search query.
 
+    Args:
+        businesses (list[dict]): A list of dictionaries containing business
+            information, with each dictionary having at least the keys "name"
+            and "phone". The dictionary may also contain the key "website" if
+            the business has a website.
+        search_query (str, optional): The search query used to obtain the
+            businesses. If not provided, the global SEARCH_QUERY variable is
+            used.
+
+    """
+    if search_query is None:
+        search_query = SEARCH_QUERY  # Default to global SEARCH_QUERY if not provided
+    
+    # Convert the search query to a valid filename by replacing invalid characters
+    # and converting to lowercase for consistency
+    filename_base = re.sub(r'[^\w\s-]', '', search_query.lower())
+    filename_base = re.sub(r'[\s-]+', '_', filename_base)
+    
+    # Create output directory if it doesn't exist
+    output_dir = 'results'
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+    
+    # Create the filenames with the search query
+    # with_website_filename = os.path.join(output_dir, f"{filename_base}_with_website.csv")  # COMMENTED OUT: Disabling generation of with_website CSV file
+    without_website_filename = os.path.join(output_dir, f"{filename_base}_without_website.csv")
+    
+    print(f"Saving results to:\n - {without_website_filename}")  # COMMENTED OUT: Removed with_website_filename
+    
+    # Save the data to the CSV files
+    with open(without_website_filename, "w", newline='', encoding='utf-8') as f_without:
+        writer_without = csv.writer(f_without)
+        writer_without.writerow(["Name", "Phone"])
+        # Count for statistics
+        without_website_count = 0
+        for biz in businesses:
+            print(f"Business record: {biz}")  # DEBUG: Show the business dict
+            if not biz.get("website"):
+                writer_without.writerow([biz.get("name", ""), biz.get("phone", "")])
+                without_website_count += 1
+        # print(f"Saved {with_website_count} businesses with websites")  # COMMENTED OUT
+        print(f"Saved {without_website_count} businesses without websites")
+    # COMMENTED OUT: All logic for with_website_filename CSV file
 
 def main():
+    
+    """
+    Main entry point for the script. Uses the configured SEARCH_QUERIES to search
+    Google Maps, processes each result to extract business information, and saves
+    the results to CSV files named after the search query.
+
+    The function catches any exceptions that occur during execution and prints
+    an error message before quitting the Selenium browser session.
+    """
     browser = setup_headless_browser()
     try:
-        results = search_google_maps(browser, SEARCH_QUERY)
-        businesses = []
-        for result in results:
-            info = extract_business_info(result)
-            businesses.append(info)
-        categorize_and_save_to_csv(businesses)
-        print(f"Done! {len(businesses)} businesses processed.")
+        for SEARCH_QUERY in SEARCH_QUERIES:
+            # Search for businesses using the configured query
+            print(f"Starting search for: {SEARCH_QUERY}")
+            results = search_google_maps(browser, SEARCH_QUERY)
+            
+            # Process each result to extract business information
+            businesses = []
+            for i, result in enumerate(results):
+                print(f"Processing business {i+1}/{len(results)}...")
+                info = extract_business_info(result)
+                businesses.append(info)
+            
+            # Save the results to CSV files named after the search query
+            categorize_and_save_to_csv(businesses, SEARCH_QUERY)
+            print(f"Done! {len(businesses)} businesses processed.")
+    except Exception as e:
+        print(f"An error occurred during execution: {e}")
     finally:
         browser.quit()
 
