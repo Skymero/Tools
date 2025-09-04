@@ -1,0 +1,10 @@
+https://www.walmart.com/search/?query={{SEARCH_TERM}}
+https://www.albertsons.com/shop/search-results.html?searchTerm={{SEARCH_TERM}}
+https://www.kroger.com/search?query={{SEARCH_TERM}}
+https://www.frysfood.com/search?query={{SEARCH_TERM}}
+https://www.safeway.com/shop/search-results.html?searchTerm={{SEARCH_TERM}}
+https://shop.sprouts.com/shop/search?q={{SEARCH_TERM}}
+https://www.amazon.com/s?k={{SEARCH_TERM}}&i=wholefoods
+https://www.publix.com/shop-online/search?searchTerm={{SEARCH_TERM}}
+https://www.heb.com/search-results?searchTerm={{SEARCH_TERM}}
+https://www.meijer.com/shop/en/search?text={{SEARCH_TERM}}

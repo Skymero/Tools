@@ -1,0 +1,10 @@
+# Add your project dependencies here
+# Example:
+# requests==2.31.0
+# numpy>=1.21.0
+requests
+pandas
+matplotlib
+plotly
+appwrite
+python-dotenv

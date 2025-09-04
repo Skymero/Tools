@@ -22,6 +22,9 @@ var/
 venv/
 LinkedInNetworkScraper/config/
 
+# Environment variables
+.env
+
 # Virtual Environment
 **/venv/
 
