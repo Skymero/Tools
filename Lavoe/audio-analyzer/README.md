@@ -137,6 +137,122 @@ print(results)
 - scikit-learn, torch
 - Other dependencies listed in requirements.txt
 
+## Tutorial: Getting Started with Lavoe Audio Analyzer
+
+This tutorial will guide you through the main features of Lavoe Audio Analyzer with practical examples.
+
+### 1. Basic Audio Analysis
+
+Analyze a complete audio file and view the results:
+
+```bash
+# Basic analysis with default settings
+python -m audio_analyzer.cli your_audio_file.wav
+
+# Get detailed output in JSON format
+python -m audio_analyzer.cli your_audio_file.wav --output-format json > analysis_results.json
+```
+
+### 2. Analyzing Specific Audio Segments
+
+Focus on a particular section of your audio file:
+
+```bash
+# Analyze only between 30 to 45 seconds
+python -m audio_analyzer.cli your_audio_file.wav --start 30 --end 45
+
+# Get a quick overview of the first minute
+python -m audio_analyzer.cli your_audio_file.wav --end 60 --summary
+```
+
+### 3. Visualizing Audio Features
+
+Generate visual representations of the audio analysis:
+
+```bash
+# Save waveform visualization
+python -m audio_analyzer.cli your_audio_file.wav --visualize --output-image waveform.png
+
+# Generate spectral analysis
+python -m audio_analyzer.cli your_audio_file.wav --spectrogram --output-image spectrogram.png
+```
+
+### 4. Advanced Feature Extraction
+
+Extract specific musical features:
+
+```bash
+# Get chord progression analysis
+python -m audio_analyzer.cli your_audio_file.wav --features chords
+
+# Analyze emotional content
+python -m audio_analyzer.cli your_audio_file.wav --features emotion
+
+# Get key and scale information
+python -m audio_analyzer.cli your_audio_file.wav --features key
+```
+
+### 5. Batch Processing
+
+Process multiple files at once:
+
+```bash
+# Process all WAV files in a directory
+for file in /path/to/audio/files/*.wav; do
+    python -m audio_analyzer.cli "$file" --output-format json > "${file%.wav}_analysis.json"
+done
+```
+
+### 6. Using the Python API
+
+For more advanced usage, you can integrate the analyzer into your Python code:
+
+```python
+from audio_analyzer.core.analyzer import AudioAnalyzer
+import json
+
+# Initialize the analyzer
+analyzer = AudioAnalyzer()
+
+# Analyze a file with all features
+results = analyzer.analyze_file(
+    'your_audio_file.wav',
+    features=['pitch', 'chords', 'emotion', 'key'],
+    start_time=30.0,  # Optional: start time in seconds
+    end_time=45.0     # Optional: end time in seconds
+)
+
+# Save results to a file
+with open('analysis_results.json', 'w') as f:
+    json.dump(results, f, indent=2)
+
+# Access specific features
+print(f"Detected key: {results['key']['estimated_key']}")
+print(f"Tempo: {results['tempo']['bpm']} BPM")
+```
+
+### 7. Real-time Analysis
+
+For real-time audio analysis (requires additional setup):
+
+```python
+from audio_analyzer.core.realtime import RealtimeAnalyzer
+import sounddevice as sd
+
+# Initialize real-time analyzer
+rt_analyzer = RealtimeAnalyzer()
+
+# Start analysis on default input device
+rt_analyzer.start()
+
+# The analyzer will run in a separate thread
+# You can access the latest analysis results:
+current_analysis = rt_analyzer.get_latest_analysis()
+
+# Remember to stop the analyzer when done
+rt_analyzer.stop()
+```
+
 ## License
 
 [MIT License](LICENSE)
