@@ -6,7 +6,7 @@ This document provides detailed diagrams of the Tapa Tool's architecture and wor
 
 The Tapa Tool is designed to:
 1. Extract parts requirements from specification documents
-2. Search for matching parts on Mouser.com
+2. Search for matching parts on Mouser.com or Digikey.com
 3. Verify TAA compliance of found parts
 4. Output TAA compliant parts to structured formats
 

@@ -2,6 +2,10 @@
 
 A comprehensive audio analysis tool that processes audio files and extracts musical and acoustic characteristics for each note in sequence. This tool enables musicians, producers, and researchers to obtain an in-depth breakdown of sound elements using both classical signal processing and modern machine learning techniques.
 
+## Workflow
+- each feature is executed individually by the user according to their needs using args.parse_args()
+
+
 ## Features
 
 For every distinct note detected in an audio file, this tool extracts:
@@ -55,6 +59,22 @@ For every distinct note detected in an audio file, this tool extracts:
 
 13. **Emotion**
     - Emotional character inference from tone, dynamics, and performance
+
+14. **Chord Progression**
+    - Chord progression analysis
+
+15. **Melody**
+    - Melody analysis
+
+16. **Rhythm**
+    - Rhythm analysis
+
+17. **Tempo**
+    - Tempo analysis
+
+18. **Key**
+    - Key analysis
+
 
 ## Installation
 

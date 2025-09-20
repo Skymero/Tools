@@ -13,7 +13,9 @@ from pydub import AudioSegment
 
 class AudioLoader:
     """Class for loading and preprocessing audio files."""
-    
+
+    SUPPORTED_FORMATS = ('.wav', '.mp3', '.flac')
+
     def __init__(self, sample_rate=44100):
         """
         Initialize the audio loader.
@@ -46,8 +48,9 @@ class AudioLoader:
         ext = ext.lower()
         
         # Check supported formats
-        if ext not in ['.wav', '.mp3', '.flac']:
-            raise ValueError(f"Unsupported audio format: {ext}. Supported formats: WAV, MP3, FLAC")
+        if ext not in self.SUPPORTED_FORMATS:
+            supported = ', '.join(fmt.upper().lstrip('.') for fmt in self.SUPPORTED_FORMATS)
+            raise ValueError(f"Unsupported audio format: {ext}. Supported formats: {supported}")
         
         # Load audio data
         try:

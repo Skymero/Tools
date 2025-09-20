@@ -1,6 +1,6 @@
-# Python Project Template
+# Webconquest
 
-A template Python project with a standard structure.
+A tool that uses either webscraping methods or APIs similar to google places to extract business information from businesses that meet the search criteria and then exports the data to a CSV file.
 
 ## Installation
 
@@ -35,12 +35,19 @@ python_template/
 ├── setup.py
 └── .gitignore
 ```
+# Webconquest
 
-## Algorithm Description: Google Maps Business Scraper
+A tool that uses either webscraping methods or APIs similar to google places to extract business information from businesses that meet the search criteria and then exports the data to a CSV file. For the following purposes:
+1. find businesses in a specified area that do not have websites
+2. find businesses in a specified area that have an events calendar in their website
+3. extract the businesses contact information, website link, social media accounts
+4. sort the data into CSV files
 
-This tool automates the process of searching for businesses in a specified area on Google Maps, extracts their contact information, and sorts them into two CSV files based on whether they have a website.
+## 1. Business Website checker
 
-## How to Use
+This tool automates the process of searching for businesses in a specified geolocation area, extracts their contact information, and sorts them into two CSV files based on whether they have a website or not.
+
+### How to Use
 
 1. **Set up the environment:**
     - Ensure you have Python 3 installed.
@@ -102,7 +109,7 @@ This tool is for educational and demonstration purposes. Automated scraping of G
 - The script is designed for demonstration and small-scale use. For production or large-scale scraping, consider using official APIs or third-party services.
 - Google may block automated scraping. Use delays and avoid aggressive querying to reduce the risk.
 
-## Development
+### Development
 
 To install the package in development mode:
 
@@ -110,8 +117,11 @@ To install the package in development mode:
 pip install -e .
 ```
 
-## Testing
+### Testing
 
 ```bash
 pytest tests/
 ```
+
+## 2. Event Calendar checker
+ the user enters a search query is entered and the script will search for businesses that meet the search criteria that have an event calendar on their website in specified cities and export the data to a CSV file.

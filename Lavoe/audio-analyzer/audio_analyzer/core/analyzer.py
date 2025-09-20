@@ -9,6 +9,7 @@ import json
 import csv
 import numpy as np
 import pandas as pd
+import librosa
 
 from ..core.audio_loader import AudioLoader
 from ..core.note_detector import NoteDetector
@@ -22,6 +23,7 @@ from ..features.articulation import ArticulationAnalyzer
 from ..features.texture import TextureAnalyzer
 from ..features.spatial import SpatialAnalyzer
 from ..features.emotion import EmotionAnalyzer
+from ..features.key import KeyAnalyzer
 from ..utils.conversions import hz_to_note
 
 
@@ -52,6 +54,7 @@ class AudioAnalyzer:
         self.texture_analyzer = TextureAnalyzer(sample_rate=sample_rate)
         self.spatial_analyzer = SpatialAnalyzer(sample_rate=sample_rate)
         self.emotion_analyzer = EmotionAnalyzer(sample_rate=sample_rate)
+        self.key_analyzer = KeyAnalyzer(sample_rate=sample_rate)
     
     def analyze_file(self, file_path, start_time=None, end_time=None, monophonic=None):
         """
@@ -156,6 +159,9 @@ class AudioAnalyzer:
         # 13. Emotion
         emotion_data = self.emotion_analyzer.analyze(segment)
         
+        # 18. Key
+        key_data = self.key_analyzer.analyze(segment)
+
         # Combine all analysis into a single result
         note_analysis = {
             'note_index': note_index,
@@ -221,7 +227,13 @@ class AudioAnalyzer:
             
             # Emotion
             'emotional_content': emotion_data['emotions'],
-            'emotional_intensity': emotion_data['intensity']
+            'emotional_intensity': emotion_data['intensity'],
+
+            # Key
+            'estimated_key': key_data['key'],
+            'key_confidence': key_data['confidence'],
+            'key_mode': key_data['mode'],
+            'key_tonic': key_data['tonic']
         }
         
         return note_analysis
