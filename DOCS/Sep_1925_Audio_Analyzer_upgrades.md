@@ -68,17 +68,17 @@ The emotion analysis module follows a modular architecture that processes audio 
 ### 2.2 Design Decisions
 
 1. **Real-time Considerations**:
-   - Optimized for efficient computation using vectorized operations
-   - Pre-allocates arrays to minimize memory allocation overhead
-   - Uses sliding windows for continuous analysis
+   - Optimized for efficient computation using vectorized operations #vectorized_operations
+   - Pre-allocates arrays to minimize memory allocation overhead #memory_allocation
+   - Uses sliding windows for continuous analysis #sliding_window
 
 2. **Robustness Features**:
-   - Handles silent segments gracefully
-   - Implements clipping detection
-   - Provides fallback values for edge cases
+   - Handles silent segments gracefully #silent_segments
+   - Implements clipping detection #clipping_detection
+   - Provides fallback values for edge cases #edge_cases
 
 3. **Extensibility**:
-   - Modular design allows for easy addition of new features
+   - Modular design allows for easy addition of new features #modular_design
    - Configurable thresholds and weights
    - Supports multiple emotion models
 
