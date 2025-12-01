@@ -367,3 +367,21 @@ The tool creates the following output files:
 - Searches for TAA compliance indicators in page text
 - Handles multiple TAA compliant countries and phrases
 - Reports evidence for compliance determinations
+
+
+### Example Parts List
+| Part                            |
+| ------------------------------- |
+| 555 timer                       |
+| 10 nF capacitor                 |
+| 0.1 μF capacitor                |
+| 4.7 μF capacitor (electrolytic) |
+| Speaker (with wires)            |
+| 25 kΩ potentiometer             |
+| 4.7 kΩ potentiometer            |
+| 2 kΩ resistor                   |
+| Speaker connector               |
+| Power connector                 |
+| Barrel jack                     |
+| Switch                          |
+| Power source                    |

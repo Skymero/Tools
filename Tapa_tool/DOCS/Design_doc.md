@@ -12,7 +12,7 @@
 - extract requirements from documents
 - search for parts that match the requirements
 - display results in a user-friendly interface
-- search for manufacturing information of the part and check if it meets TAA compliance criteria
+- optn: search for manufacturing information of the part and check if it meets TAA compliance criteria
 
 # React Native Expo Project Layout
 

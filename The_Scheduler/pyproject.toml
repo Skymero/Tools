@@ -1,0 +1,15 @@
+["build-system"]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "the-scheduler"
+version = "0.1.0"
+description = "Workflow-oriented scheduler that mirrors an n8n automation."
+requires-python = ">=3.11"
+dependencies = []
+readme = "README.md"
+authors = [{ name = "Codex Assistant" }]
+
+[project.scripts]
+the-scheduler = "the_scheduler.scheduler:main"
