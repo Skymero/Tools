@@ -1,0 +1,116 @@
+{
+  "scenes": [
+    {
+      "name": "conservatory_exterior",
+      "image": "BD-CH1-img-9.png",
+      "start": 0,
+      "end": 35,
+      "motion": "push_in",
+      "intensity": 0.06
+    },
+    {
+      "name": "kellie_working_late",
+      "image": "BD-CH1-img-1.png",
+      "start": 35,
+      "end": 85,
+      "motion": "push_in",
+      "intensity": 0.05
+    },
+    {
+      "name": "late_night_transit",
+      "image": "BD-CH1-img-10.png",
+      "start": 85,
+      "end": 115,
+      "motion": "pan_right",
+      "intensity": 0.05
+    },
+    {
+      "name": "bram_assignment",
+      "image": "BD-CH1-img-2.png",
+      "start": 115,
+      "end": 195,
+      "motion": "push_in",
+      "intensity": 0.05
+    },
+    {
+      "name": "investor_tour",
+      "image": "BD-CH1-img-11.png",
+      "start": 195,
+      "end": 230,
+      "motion": "pan_left",
+      "intensity": 0.06
+    },
+    {
+      "name": "shop_notebook",
+      "image": "BD-CH1-img-3.png",
+      "start": 230,
+      "end": 275,
+      "motion": "push_in",
+      "intensity": 0.08
+    },
+    {
+      "name": "imagined_shop",
+      "image": "BD-CH1-img-12.png",
+      "start": 275,
+      "end": 310,
+      "motion": "pull_out",
+      "intensity": 0.05
+    },
+    {
+      "name": "room_three_entrance",
+      "image": "BD-CH1-img-4.png",
+      "start": 310,
+      "end": 370,
+      "motion": "push_in",
+      "intensity": 0.08
+    },
+    {
+      "name": "environment_cutaway",
+      "image": "BD-CH1-img-13.png",
+      "start": 370,
+      "end": 410,
+      "motion": "pan_right",
+      "intensity": 0.04
+    },
+    {
+      "name": "specimen_17",
+      "image": "BD-CH1-img-5.png",
+      "start": 410,
+      "end": 495,
+      "motion": "push_in",
+      "intensity": 0.07
+    },
+    {
+      "name": "aerosol",
+      "image": "BD-CH1-img-6.png",
+      "start": 495,
+      "end": 575,
+      "motion": "push_in",
+      "intensity": 0.1
+    },
+    {
+      "name": "pov_slipping",
+      "image": "BD-CH1-img-14.png",
+      "start": 575,
+      "end": 635,
+      "motion": "static",
+      "intensity": 0.01
+    },
+    {
+      "name": "first_bram_face",
+      "image": "BD-CH1-img-7.png",
+      "start": 635,
+      "end": 760,
+      "motion": "push_in",
+      "intensity": 0.08
+    },
+    {
+      "name": "plants_laughing",
+      "image": "BD-CH1-img-8.png",
+      "start": 760,
+      "end": 900,
+      "motion": "pull_out",
+      "intensity": 0.08
+    }
+  ]
+}

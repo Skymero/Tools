@@ -1,0 +1,7 @@
+Hello! This is a sample text file for the Text to Speech converter.
+
+This tool uses the Google Text-to-Speech library to convert written text into spoken audio in MP3 format.
+
+You can convert any text file by running the Python script with the file path as an argument.
+
+Enjoy using this tool!
