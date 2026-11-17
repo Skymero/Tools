@@ -81,3 +81,18 @@ GrocerySaver is a Python automation tool designed to help users compare grocery 
 - `beautifulsoup4`: Parses HTML content to extract price information.
 - `re`, `csv`, `time`: Standard Python libraries for pattern matching, file handling, and timing.
 
+
+# Benner Cycle Analysis Toolkit
+
+**Project Description:**  
+The Benner Cycle Analysis Toolkit is a sophisticated financial analytics tool that implements and evaluates Samuel Benner's 19th-century market cycle theory using modern data science techniques. The toolkit analyzes historical market data to identify and visualize the 8-9-10 year cycles that Benner observed in market behavior. It provides valuable insights for financial analysts, economists, and investors interested in long-term market trends and cyclical patterns. The project demonstrates expertise in financial data analysis, time series processing, and data visualization, making it particularly relevant for roles in quantitative finance, data science, and economic research.
+
+**Libraries Used:**  
+- `pandas`, `numpy`: Data manipulation and analysis.
+- `matplotlib`: Data visualization and chart generation.
+- `yfinance`, `pandas_datareader`, `alpha_vantage`: Financial data acquisition.
+- `scipy`: Statistical analysis and signal processing.
+- `investpy`: Alternative financial data source.
+- `selenium`, `beautifulsoup4`: Web scraping for additional data collection.
+- `webdriver-manager`: Browser automation management.
+

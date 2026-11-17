@@ -1,0 +1,12 @@
+the goal was to get a catalogue of all owned cards from a set of cards and then have the code do the following:
+1. get the card stats
+2. compile them all into a spreadsheet
+3. search for the card's value
+4. export a file with all of your cards listed
+5. use google gemini to create a various decks and what strategies are contained within it
+6. create strategies with the catalogue
+
+opencv-python
+pytesseract
+numpy
+Pillow

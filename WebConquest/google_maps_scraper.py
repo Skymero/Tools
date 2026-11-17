@@ -2,6 +2,8 @@ import csv
 import time
 import re
 import os
+import random
+from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
@@ -13,14 +15,58 @@ from selenium.common.exceptions import NoSuchElementException, StaleElementRefer
 
 # --- CONFIG ---
 # SEARCH_QUERY = "private practice doctors glendale arizona"
-SEARCH_QUERIES = ["HIGH END CONSULTANTS in tucson arizona", "welders in tucson arizona", "woodworkers in tucson arizona", "real estate agents in tucson arizona", "counselors in tucson arizona", "landscapers in tucson arizona", "car detailers in tucson arizona", "accountants in tucson arizona", "attorneys in tucson arizona", "plumbers in tucson arizona", "visual artists in tucson arizona", "dry cleaners in tucson arizona", "3D printer businesses in tucson arizona", "yoga studios in tucson arizona", "massage therapists in tucson arizona", "auto repair shops in tucson arizona", "donut shops in tucson arizona", "esthetician in tucson arizona", "pool maintanence in tucson arizona", "Deli stores in tucson arizona", "doggy day care centers in tucson arizona", "chiropractitioners in tucson arizona", "pawn shops in tucson arizona"  ]
-DELAY_BETWEEN_ACTIONS = 5  # seconds (increased for better loading)
-MAX_RESULTS = 3000  # Maximum number of results to process
-MAX_SCROLL_ATTEMPTS = 20  # Increased scrolling to find more results
+#SEARCH_QUERIES = ["HIGH END CONSULTANTS in tucson arizona", "welders in tucson arizona", "woodworkers in tucson arizona", "real estate agents in tucson arizona", "counselors in tucson arizona", "landscapers in tucson arizona", "car detailers in tucson arizona", "accountants in tucson arizona", "attorneys in tucson arizona", "plumbers in tucson arizona", "visual artists in tucson arizona", "dry cleaners in tucson arizona", "3D printer businesses in tucson arizona", "yoga studios in tucson arizona", "massage therapists in tucson arizona", "auto repair shops in tucson arizona", "donut shops in tucson arizona", "esthetician in tucson arizona", "pool maintanence in tucson arizona", "Deli stores in tucson arizona", "doggy day care centers in tucson arizona", "chiropractitioners in tucson arizona", "pawn shops in tucson arizona"  ]
+SEARCH_QUERIES = ["attorneys in tucson arizona", "photographers in phoenix"]
+DELAY_BETWEEN_ACTIONS = random.randint(4, 20)  # seconds (increased for better loading)
+MAX_RESULTS = 2 # Maximum number of results to process
+MAX_SCROLL_ATTEMPTS = 5  # Increased scrolling to find more results
 MAX_PAGINATION_PAGES = 60  # Number of pagination pages to navigate
 CLICK_RETRY_ATTEMPTS = 5  # Number of times to retry clicking a stale element
 WAIT_TIMEOUT = 10  # Maximum seconds to wait for an element
 
+
+
+def instagramFinder(businessName):
+    """
+    Search for an Instagram account for a business via Google.
+    
+    Args:
+        businessName (str): The business name to search for.
+        
+    Returns:
+        str: Instagram username or "not_found" if not found.
+    """
+    # Use the existing browser setup function
+    driver = setup_headless_browser()
+    try:
+        # Step 1: Perform a Google search
+        query = f'{businessName} site:instagram.com'
+        search_url = f'https://www.google.com/search?q={query.replace(" ", "+")}'
+        driver.get(search_url)
+        time.sleep(2)  # Let page load
+
+        # Step 2: Parse the page and find Instagram profile links
+        soup = BeautifulSoup(driver.page_source, 'html.parser')
+        links = [a['href'] for a in soup.find_all('a', href=True)]
+        
+        # Search for first valid Instagram profile link
+        for link in links:
+            if 'instagram.com' in link and '/search?' not in link:
+                # Extract username from URL
+                match = re.search(r'instagram\.com/([^/?&]+)', link)
+                if match:
+                    userIG = match.group(1)
+                    break
+        else:
+            userIG = "not_found"
+    except Exception as e:
+        print(f"Error in Instagram finder: {e}")
+        userIG = "not_found"
+    finally:
+        driver.quit()
+    
+    # Step 3: Return result
+    return userIG
 
 def setup_headless_browser():
     options = Options()
@@ -512,13 +558,15 @@ def categorize_and_save_to_csv(businesses, search_query=None):
     # Save the data to the CSV files
     with open(without_website_filename, "w", newline='', encoding='utf-8') as f_without:
         writer_without = csv.writer(f_without)
-        writer_without.writerow(["Name", "Phone"])
+        writer_without.writerow(["Name", "Phone", "Instagram"])
         # Count for statistics
         without_website_count = 0
         for biz in businesses:
+            userIG = instagramFinder(biz.get("name", ""))
+            
             print(f"Business record: {biz}")  # DEBUG: Show the business dict
             if not biz.get("website"):
-                writer_without.writerow([biz.get("name", ""), biz.get("phone", "")])
+                writer_without.writerow([biz.get("name", ""), biz.get("phone", ""), userIG])
                 without_website_count += 1
         # print(f"Saved {with_website_count} businesses with websites")  # COMMENTED OUT
         print(f"Saved {without_website_count} businesses without websites")
