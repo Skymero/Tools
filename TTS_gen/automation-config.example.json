@@ -1,0 +1,10 @@
+{
+  "work_root": "work",
+  "output_root": "output",
+  "database": "work/tts_gen.db",
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "max_attempts": 3,
+  "exports": {"full_chapter": true, "vertical_teaser": false}
+}

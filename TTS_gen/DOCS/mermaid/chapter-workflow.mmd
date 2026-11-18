@@ -1,0 +1,11 @@
+flowchart TD
+    A[Drive Incoming] --> B[run_drive_queue.py --once]
+    B --> C[Fingerprint and snapshot]
+    C --> D[render_chapter.py --job-dir]
+    D --> E[Strict timeline validation]
+    E --> F[Kokoro narration]
+    F --> G[FFmpeg render]
+    G --> H[FFprobe verification]
+    H --> I[Stable Drive upload IDs]
+    I --> J[Completed - manual platform upload]
+

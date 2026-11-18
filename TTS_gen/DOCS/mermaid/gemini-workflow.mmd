@@ -1,0 +1,12 @@
+flowchart TD
+    A[Explicit Phase 2 opt-in] --> B[Gemini countTokens]
+    B --> C{Within local 80 percent policy?}
+    C -->|No| D[quota_hold]
+    C -->|Yes| E[Reserve SQLite quota]
+    E --> F[Call versioned Langflow flow]
+    F --> G[Save raw response first]
+    G --> H{Strict plan valid?}
+    H -->|No| I[Hold for review]
+    H -->|Yes| J[Generate measured scene audio]
+    J --> K[Write cumulative timeline]
+

@@ -1,0 +1,16 @@
+{
+  "name": "TTS_gen Scene Planner",
+  "version": 1,
+  "status": "template-requires-real-export",
+  "schema": {
+    "scenes": [{
+      "paragraph_start": "integer",
+      "paragraph_end": "integer",
+      "image_id": "string",
+      "motion": "static|push_in|pull_out|pan_left|pan_right",
+      "intensity": "number 0..1"
+    }]
+  },
+  "note": "Replace with the secret-free export from the accepted development flow before Phase 2."
+}
+

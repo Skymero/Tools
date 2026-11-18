@@ -1,0 +1,16 @@
+stateDiagram-v2
+    [*] --> discovered
+    discovered --> snapshotting
+    snapshotting --> ready
+    ready --> rendering
+    rendering --> verifying
+    verifying --> uploading
+    uploading --> completed
+    snapshotting --> failed
+    rendering --> failed
+    verifying --> failed
+    uploading --> failed
+    discovered --> auth_attention
+    discovered --> quota_hold
+    failed --> ready: RETRY marker
+

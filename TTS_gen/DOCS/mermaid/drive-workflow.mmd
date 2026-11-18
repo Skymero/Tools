@@ -1,0 +1,13 @@
+flowchart TD
+    A[List oldest Drive folders] --> B{Eligible unfinished version?}
+    B -->|No| C[Exit 0 - no work]
+    B -->|Yes| D[Create deterministic fingerprint]
+    D --> E[Download isolated snapshot]
+    E --> F{Remote fingerprint unchanged?}
+    F -->|No| G[Requeue new version]
+    F -->|Yes| H[Render or reuse verified MP4]
+    H --> I[Query saved Drive output ID]
+    I --> J[Create or update resumable upload]
+    J --> K[Confirm parent, name, size]
+    K --> L[Mark completed]
+
